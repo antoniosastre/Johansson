@@ -107,6 +107,28 @@ function isValidCookie($cookie){
 
 }
 
+function tableOfNews($status, $date=0){
+
+	require_once 'functions.php';
+
+	global $conexion;
+
+	if($date==0){
+			$que = "SELECT * FROM news WHERE showdate=\"".date("Y-m-d")."\" AND status=\"".$status."\" ORDER BY position ASC";
+	}else{
+			$que = "SELECT * FROM news WHERE showdate=\"".$date."\" AND status=\"".$status."\" ORDER BY position ASC";	
+	}
+
+	$res = mysqli_query($conexion,$que);
+
+	if($status == 0){
+			printQueuedNewsTable($res);
+	}else if($status == 1){
+			printAcceptedNewsTable($res);	
+	}
+	
+}
+
 
 /*
 ----------------------------------------------------------------------
@@ -336,75 +358,6 @@ function videoYears(){
 	return $years;
 
 }
-
-function tableOfYear($year, $user = 0, $person = 0, $place = 0, $tag = 0, $title = 0){
-
-	require_once 'functions.php';
-
-	global $conexion;
-
-	if(!empty($year)){
-			$que = "SELECT * FROM video WHERE YEAR(recorded_when)=\"".$year."\" ORDER BY recorded_when DESC, id DESC";
-	}
-
-	if(!empty($user)){
-	
-		if(!empty($year)){
-			$que = "SELECT * FROM video WHERE YEAR(recorded_when)=\"".$year."\" AND recorded_who=\"".userIdByUser($user)."\" ORDER BY recorded_when DESC, id DESC";
-		}else{
-			$que = "SELECT * FROM video WHERE recorded_who=\"".userIdByUser($user)."\" ORDER BY recorded_when DESC, id DESC";
-		}
-
-	}
-
-	if(!empty($person)){
-
-		if(!empty($year)){
-			$que = "SELECT * FROM people INNER JOIN peopleinmedia ON people.id = peopleinmedia.person INNER JOIN video ON peopleinmedia.media = video.id WHERE people.name LIKE '%".$person."%' AND YEAR(recorded_when)=\"".$year."\" ORDER BY video.recorded_when DESC, video.id DESC";
-		}else{
-			$que = "SELECT * FROM people INNER JOIN peopleinmedia ON people.id = peopleinmedia.person INNER JOIN video ON peopleinmedia.media = video.id WHERE people.name LIKE '%".$person."%' ORDER BY video.recorded_when DESC, video.id DESC";
-		}
-
-	}
-
-	if(!empty($place)){
-
-		if(!empty($year)){
-			$que = "SELECT * FROM places INNER JOIN placesinmedia ON places.id = placesinmedia.place INNER JOIN video ON placesinmedia.media = video.id WHERE places.name LIKE '%".$place."%' AND YEAR(recorded_when)=\"".$year."\" ORDER BY video.recorded_when DESC, video.id DESC";
-		}else{
-			$que = "SELECT * FROM places INNER JOIN placesinmedia ON places.id = placesinmedia.place INNER JOIN video ON placesinmedia.media = video.id WHERE places.name LIKE '%".$place."%' ORDER BY video.recorded_when DESC, video.id DESC";
-		}
-
-	}
-
-	if(!empty($tag)){
-
-		if(!empty($year)){
-			$que = "SELECT * FROM tags INNER JOIN tagsinmedia ON tags.id = tagsinmedia.tag INNER JOIN video ON tagsinmedia.media = video.id WHERE tags.name LIKE '%".$tag."%' AND YEAR(recorded_when)=\"".$year."\" ORDER BY video.recorded_when DESC, video.id DESC";
-		}else{
-			$que = "SELECT * FROM tags INNER JOIN tagsinmedia ON tags.id = tagsinmedia.tag INNER JOIN video ON tagsinmedia.media = video.id WHERE tags.name LIKE '%".$tag."%' ORDER BY video.recorded_when DESC, video.id DESC";
-		}
-
-	}
-
-	if(!empty($title)){
-
-		if(!empty($year)){
-			$que = "SELECT * FROM video WHERE title LIKE \"%".$title."%\" AND YEAR(recorded_when)=\"".$year."\" ORDER BY recorded_when DESC, id DESC";
-		}else{
-			$que = "SELECT * FROM video WHERE title LIKE \"%".$title."%\" ORDER BY recorded_when DESC, id DESC";
-		}
-	
-	}
-
-	echo $que;
-
-	$res = mysqli_query($conexion,$que);
-
-	printVideoRows($res);
-
-}
-
 
 function tableOfInterval($from, $to, $user = 0, $person = 0, $place = 0, $tag = 0, $title = 0){
 

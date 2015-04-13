@@ -122,6 +122,8 @@ function newsInQueueToday(){
 
 function printQueuedNewsTable($res){
 
+	require_once 'morgamdb.php';
+
 	echo "<table class=\"table table-striped table-bordered table-condensed\">";
 	echo "<thead><tr>";
 	echo "<th>Nº</th><th>Títular</th><th>Prompter</th><th>Vídeo</th><th>Acciones</th>";
@@ -130,13 +132,17 @@ function printQueuedNewsTable($res){
 	while($noticia = mysqli_fetch_array($res)){
 
 		echo "<tr>";
-			echo "<td class=\"text-right\">".$noticia['order']."</td>"."<td>".$noticia['header']."</td>"."<td>".$noticia['prompter']."</td>"."<td>".$noticia['related_media']."</td>"."<td>";
-		
-				echo "<span class=\"glyphicon glyphicon-log-in\" aria-hidden=\"true\"></span>";
-				echo "<span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\"></span>";
-				echo "<span class=\"glyphicon glyphicon-new-window\" aria-hidden=\"true\"></span>";
-				echo "<span class=\"glyphicon glyphicon-share\" aria-hidden=\"true\"></span>";
-				echo "<span class=\"glyphicon glyphicon-trash\" aria-hidden=\"true\"></span>";
+			echo "<td class=\"text-right\">".$noticia['position']."</td>"."<td>".$noticia['header']."</td>"."<td>".$noticia['prompter']."</td>"."<td>";
+			
+			echo "<video id=\"video-".$noticia['position']."\" width=\"256\" height=\"144\" controls>";
+			echo "<source src=\"/volume1/web/morgam/".urlOfVideo($noticia['related_media'])."\" />";
+			echo "</video>";
+			echo "</td>"."<td style=\"width: 80px;\">";
+				
+				echo "<a href\"\"><span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\"></span> Editar</a><br>";
+				echo "<a href\"\"><span class=\"glyphicon glyphicon-log-in\" aria-hidden=\"true\"></span> Meter</a><br>";
+				echo "<a href\"\"><span class=\"glyphicon glyphicon-share\" aria-hidden=\"true\"></span> Mañana</a><br>";
+				echo "<a href\"\"><span class=\"glyphicon glyphicon-trash\" aria-hidden=\"true\"></span> Borrar</a>";
 
 			echo "</td>";
 		echo "</tr>";
@@ -148,6 +154,9 @@ function printQueuedNewsTable($res){
 
 function printAcceptedNewsTable($res){
 
+	require_once 'morgamdb.php';
+
+
 	echo "<table class=\"table table-striped table-bordered table-condensed\">";
 	echo "<thead><tr>";
 	echo "<th>Nº</th><th>Títular</th><th>Prompter</th><th>Vídeo</th><th>Acciones</th>";
@@ -156,15 +165,20 @@ function printAcceptedNewsTable($res){
 	while($noticia = mysqli_fetch_array($res)){
 
 		echo "<tr>";
-			echo "<td class=\"text-right\">".$noticia['order']."</td>"."<td>".$noticia['header']."</td>"."<td>".$noticia['prompter']."</td>"."<td>".$noticia['related_media']."</td>"."<td>";
+			echo "<td class=\"text-right\">".$noticia['position']."</td>"."<td>".$noticia['header']."</td>"."<td>".$noticia['prompter']."</td>"."<td>";
+			
+			echo "<video id=\"video-".$noticia['position']."\" width=\"256\" height=\"144\" controls>";
+			echo "<source src=\"http://www.sastrenet.net/morgam/".urlOfVideo($noticia['related_media'])."\" />";
+			echo "</video>";
 
-				echo "<span class=\"glyphicon glyphicon-collapse-up\" aria-hidden=\"true\"></span>";
-				echo "<span class=\"glyphicon glyphicon-collapse-down\" aria-hidden=\"true\"></span>";
-				echo "<span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\"></span>";
-				echo "<span class=\"glyphicon glyphicon-log-out\" aria-hidden=\"true\"></span>";
-				echo "<span class=\"glyphicon glyphicon-new-window\" aria-hidden=\"true\"></span>";
-				echo "<span class=\"glyphicon glyphicon-share\" aria-hidden=\"true\"></span>";
-				echo "<span class=\"glyphicon glyphicon-trash\" aria-hidden=\"true\"></span>";
+			echo "</td>"."<td style=\"width: 80px;\">";
+
+				echo "<a href\"\"><span class=\"glyphicon glyphicon-collapse-up\" aria-hidden=\"true\"></span> Subir</a><br>";
+				echo "<a href\"\"><span class=\"glyphicon glyphicon-collapse-down\" aria-hidden=\"true\"></span> Bajar</a><br>";
+				echo "<a href\"\"><span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\"></span> Editar</a><br>";
+				echo "<a href\"\"><span class=\"glyphicon glyphicon-log-out\" aria-hidden=\"true\"></span> Sacar</a><br>";
+				echo "<a href\"\"><span class=\"glyphicon glyphicon-share\" aria-hidden=\"true\"></span> Mañana</a><br>";
+				echo "<a href\"\"><span class=\"glyphicon glyphicon-trash\" aria-hidden=\"true\"></span> Borrar</a>";
 
 			echo "</td>";
 		echo "</tr>";

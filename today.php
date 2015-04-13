@@ -36,8 +36,19 @@ if(!isValidCookie("johansson")){
 
 <h2>Escaleta</h2>
 
+<?
+
+	tableOfNews(1);
+
+?>
+
 <h2>Cola de Noticias</h2>
 
+<?
+
+	tableOfNews(0);	
+
+?>
 
 </div>
 

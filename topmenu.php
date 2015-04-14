@@ -17,7 +17,7 @@
         <li <?php if (strpos($_SERVER['SCRIPT_NAME'], "index.php")) echo "class=\"active\""; ?>><a href="index.php"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Inicio</a></li>
         <li <?php if (strpos($_SERVER['SCRIPT_NAME'], "today.php")) echo "class=\"active\""; ?>><a href="today.php"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Hoy 
         <?php 
-        require_once 'functions.php'; 
+        require_once 'db.php'; 
 
         if(newsInQueueToday()>0){
           echo "<span class=\"badge\">".newsInQueueToday()."</span>";
@@ -25,7 +25,7 @@
         ?>
         </a></li>
         <li <?php if (strpos($_SERVER['SCRIPT_NAME'], "gotoaday.php")) echo "class=\"active\""; ?>><a href="gotoaday.php"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Ir al día</a></li>
-        <li <?php if (strpos($_SERVER['SCRIPT_NAME'], "new-news.php")) echo "class=\"active\""; ?>><a href="new-news.php"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Nueva Noticia</a></li>
+        <li <?php if (strpos($_SERVER['SCRIPT_NAME'], "news-editor.php")) echo "class=\"active\""; ?>><a href="news-editor.php?a=new"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Nueva Noticia</a></li>
 
       </ul>
       

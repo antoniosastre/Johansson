@@ -129,6 +129,131 @@ function tableOfNews($status, $date=0){
 	
 }
 
+function getNewsById($newsId){
+
+	global $conexion;
+
+	$que = "SELECT * FROM news WHERE id='".$newsId."'";
+
+	$res = mysqli_query($conexion,$que);
+
+	return mysqli_fetch_array($res);
+
+}
+
+function deleteNewsByID($newsId){
+
+	global $conexion;
+
+	$que = "DELETE FROM news WHERE id='".$newsId."'";
+
+	$res = mysqli_query($conexion,$que);
+
+}
+
+function setNewsStatus($newsId, $status){
+
+	global $conexion;
+
+	$que = "UPDATE news SET status='".$status."' WHERE id='".$newsId."'";
+
+	$res = mysqli_query($conexion,$que);
+	
+}
+
+function setNewsPosition($newsId, $position){
+
+	if($position == "last"){
+
+		$last_position = getLastPositionOfAccepted($newsId);
+		setNewsPosition($newsId, $last_position);
+
+	}else if($position == "clear"){
+
+		global $conexion;
+		$que = "UPDATE news SET position='0' WHERE id='".$newsId."'";
+		$res = mysqli_query($conexion,$que);
+	
+	}else{
+		global $conexion;
+		$que = "UPDATE news SET position='".$position."' WHERE id='".$newsId."'";
+		$res = mysqli_query($conexion,$que);
+	}
+
+}
+
+function getLastPositionOfAccepted($newsId){
+
+	global $conexion;
+	$que = "SELECT showdate FROM news WHERE id='".$newsId."'";
+	$res = mysqli_query($conexion,$que);
+
+	$showdate = mysqli_fetch_array($res)['showdate'];
+
+	$que = "SELECT MAX(position) AS max FROM news WHERE showdate='".$showdate."' AND status='1'";
+	$res = mysqli_query($conexion,$que);
+
+	return mysqli_fetch_array($res)['max']+1;
+
+}
+
+function newsInQueueToday(){
+
+	global $conexion;
+	$que = "SELECT COUNT(*) AS total FROM news WHERE showdate='".date("Y-m-d")."' AND status='0'";
+	$res = mysqli_query($conexion,$que);
+
+	return mysqli_fetch_array($res)['total'];
+
+}
+
+
+function trimNewsPositions(){
+
+	global $conexion;
+	$position = 1;
+
+	$que = "SELECT id, position FROM news WHERE showdate='".date("Y-m-d")."' AND trimmed='0' AND status='1' ORDER BY position ASC";
+
+	$res = mysqli_query($conexion,$que);
+
+	while($min = mysqli_fetch_array($res)){
+
+		$que = "UPDATE news SET position='".$position."', trimmed='1' WHERE id='".$min['id']."'";
+		mysqli_query($conexion,$que);
+
+		$position++;
+
+		$que = "SELECT id, position FROM news WHERE showdate='".date("Y-m-d")."' AND trimmed='0' AND status='1' ORDER BY position ASC";
+
+		$res = mysqli_query($conexion,$que);
+
+	}	
+
+	$que = "UPDATE news SET trimmed='0'";
+
+	mysqli_query($conexion,$que);
+
+}
+
+function insertNewNews($header, $prompter, $related_media, $showdate, $userId){
+
+	global $conexion;
+
+	$que = "INSERT INTO news (header, prompter, related_media, showdate, user) VALUES ('".$header."', '".$prompter."', '".$related_media."', '".$showdate."', '".$userId."')";
+	mysqli_query($conexion,$que);
+
+}
+
+function updateNews($newsId, $header, $prompter, $related_media, $showdate, $userId){
+
+	global $conexion;
+
+	$que = "UPDATE news SET header='".$header."', prompter='".$prompter."', related_media='".$related_media."', showdate'".$showdate."') WHERE id='".$newsId."'";
+	mysqli_query($conexion,$que);
+
+}
+
 
 /*
 ----------------------------------------------------------------------
@@ -396,5 +521,6 @@ function updateFilenameInDB($idinsertedmedia, $def_target_file){
 	$res = mysqli_query($conexion,$que);
 	
 }
+
 
 ?>

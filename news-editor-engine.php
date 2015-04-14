@@ -32,8 +32,20 @@ if(!isValidCookie("johansson")){
 		
 <div class="container">
 
+<?php
+
+	if($_POST['a']=="new"){
+
+		insertNewNews($_POST['header'], $_POST['prompter'], $_POST['related_media'], $_POST['showdate'], userIdByUser(explode("-and-", $_COOKIE['johansson'])[0]));
+
+	}else if($_POST['a']=="edit"){
+
+		updateNews($_POST['n'], $_POST['header'], $_POST['prompter'], $_POST['related_media'], $_POST['showdate'], userIdByUser(explode("-and-", $_COOKIE['johansson'])[0]));
+
+	}
 
 
+?>
 
 </div>
 

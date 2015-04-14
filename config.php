@@ -7,4 +7,6 @@ $HDDL1 = 85;
 $HDDL2 = 90;
 $HDDL3 = 95;
 
+$PRE_RUTA_A_VIDEOS = "http://www.sastrenet.net/morgam/";
+
 ?>
